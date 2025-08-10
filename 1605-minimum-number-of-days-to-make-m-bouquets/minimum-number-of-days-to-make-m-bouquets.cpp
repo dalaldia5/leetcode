@@ -33,9 +33,10 @@ public:
         while (low <= high) {
             int mid = (low + high) / 2;
             if (possible(arr, mid, m, k)) {
-                high = mid - 1;
+                high = mid - 1; // agr usse chhota bhi koi possible ho
             } else
-                low = mid + 1;
+                low = mid + 1; // agar mid possible nhi hai, toh usse niche wale
+                               // bhi nhi hi honge
         }
         return low;
     }
