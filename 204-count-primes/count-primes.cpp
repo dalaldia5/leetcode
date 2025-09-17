@@ -1,7 +1,6 @@
 class Solution {
 public:
     int countPrimes(int n) {
-        // prime no. generation using sieve of eratosthenes
         vector<bool> prime(n + 1, true);
         prime[0] = false;
         prime[1] = false;
@@ -12,13 +11,14 @@ public:
                 }
             }
         }
-        // counting prime numbers
-        int primeCount = 0;
+        int cnt = 0;
         for (int i = 2; i < n; i++) {
             if (prime[i]) {
-                primeCount++;
+                cnt++;
             }
         }
-        return primeCount;
+        return cnt;
     }
 };
+// TC: O(N) + O(N(log(log N))) + O(N)
+// SC: O(N)
