@@ -1,29 +1,31 @@
 class Solution {
-private:
-    bool isPeakElement(vector<vector<int>>& mat, int row, int col) {
-        int n = mat.size();
-        int m = mat[0].size();
-        int dxdy[][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-        for (int i = 0; i < 4; i++) {
-            int newrow = row + dxdy[i][0];
-            int newcol = col + dxdy[i][1];
-            if (newrow >= 0 && newcol >= 0 && newrow < n && newcol < m &&
-                mat[newrow][newcol] > mat[row][col]) {
-                return false;
+public:
+    int findMaxIndex(vector<vector<int>>& mat, int n, int m, int col) {
+        int maxIndex = -1;
+        int index = -1;
+        for (int i = 0; i < n; i++) {
+            if (mat[i][col] > maxIndex) {
+                maxIndex = mat[i][col];
+                index = i;
             }
         }
-        return true;
+        return index;
     }
-
-public:
     vector<int> findPeakGrid(vector<vector<int>>& mat) {
         int n = mat.size();
         int m = mat[0].size();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (isPeakElement(mat, i, j)) {
-                    return {i, j};
-                }
+        int high = m - 1, low = 0;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int maxIndex = findMaxIndex(mat, n, m, mid);
+            int left = mid - 1 >= 0 ? mat[maxIndex][mid - 1] : -1;
+            int right = mid + 1 < m ? mat[maxIndex][mid + 1] : -1;
+            if (mat[maxIndex][mid] > left && mat[maxIndex][mid] > right) {
+                return {maxIndex, mid};
+            } else if (mat[maxIndex][mid] < left) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return {-1, -1};
