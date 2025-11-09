@@ -4,7 +4,6 @@ public:
         if (intervals.empty())
             return 0;
 
-        vector<vector<int>> newIntervals = intervals;
         sort(intervals.begin(), intervals.end());
 
         int cnt = 0;
