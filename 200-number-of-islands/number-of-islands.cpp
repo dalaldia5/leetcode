@@ -1,35 +1,44 @@
 class Solution {
-public:
-    void DFS(vector<vector<char>>& grid, int i, int j) {
-        if (i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size())
-            return;
-        // return if current position is of water or is already visited
-        if (grid[i][j] == '2' || grid[i][j] == '0')
-            return;
+private:
+    void bfs(int row, int col, vector<vector<int>>& vis,
+             vector<vector<char>>& grid, int n, int m) {
+        vis[row][col] = 1;
+        queue<pair<int, int>> q;
+        q.push({row, col});
+        int dr[4] = {-1, 0, 1, 0};
+        int dc[4] = {0, 1, 0, -1};
+        while (!q.empty()) {
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
 
-        // mark the current as visited
-        grid[i][j] = '2';
-
-        // do DFS in all 4 directions
-        DFS(grid, i + 1, j);
-        DFS(grid, i, j - 1);
-        DFS(grid, i - 1, j);
-        DFS(grid, i, j + 1);
-    }
-
-    int numIslands(vector<vector<char>>& grid) {
-        // find no. of disconnected components in the graph
-        int islands = 0;
-        // We make each 1 as 2 in when it is visited
-        for (int i = 0; i < grid.size(); i++) {
-            for (int j = 0; j < grid[0].size(); j++) {
-                // do DFS in case has not been visited and there is land
-                if (grid[i][j] == '1') {
-                    DFS(grid, i, j);
-                    islands++;
+            for (int k = 0; k < 4; k++) {
+                int nrow = row + dr[k];
+                int ncol = col + dc[k];
+                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
+                    grid[nrow][ncol] == '1' && !vis[nrow][ncol]) {
+                    vis[nrow][ncol] = 1;
+                    q.push({nrow, ncol});
                 }
             }
         }
-        return islands;
     }
-};
+
+public : int
+         numIslands(vector<vector<char>>& grid) {
+    int n = grid.size();
+    int m = grid[0].size();
+    vector<vector<int>> vis(n, vector<int>(m, 0));
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (!vis[i][j] && grid[i][j] == '1') {
+                cnt++;
+                bfs(i, j, vis, grid, n, m);
+            }
+        }
+    }
+    return cnt;
+}
+}
+;
