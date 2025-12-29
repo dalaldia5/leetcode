@@ -1,16 +1,28 @@
 class Solution {
 public:
+    // t = memoization map
+    // Ye map already solved states ko store krta h so that
+    // same subproblem baar-baar solve na karna pade
+    // key  -> current state (curr + idx + above)
+    // value-> true / false (iss state se pyramid ban skta h ya nhi)
     unordered_map<string, bool> t;
 
     bool fun(string curr, unordered_map<string, vector<char>>& mpp, int idx,
              string above) {
+
         // Base case: agar current row me sirf 1 block bacha
         // matlab pyramid successfully ban gaya
         if (curr.size() == 1)
             return true;
 
+        // Current recursion state ko uniquely represent karne ke liye key
+        // curr  -> current row
+        // idx   -> current index
+        // above -> ab tak bani upar wali row
         string key = curr + "_" + to_string(idx) + "_" + above;
 
+        // Agar ye state pehle hi calculate ho chuki hai
+        // toh directly stored answer return kar do
         if (t.count(key))
             return t[key];
 
@@ -33,12 +45,13 @@ public:
 
             // EXPLORE: next index ke liye recursion
             if (fun(curr, mpp, idx + 1, above) == true)
-                return t[key] = true;
+                return t[key] = true; // successful path mil gaya
 
             above.pop_back(); // UNDO: agar fail hua toh last block hata do
         }
 
         // Agar koi bhi option se pyramid nahi bana
+        // is state ka result false store kar lo
         return t[key] = false;
     }
 
