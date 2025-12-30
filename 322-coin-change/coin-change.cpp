@@ -23,7 +23,7 @@ private:
         int notTake = f(ind - 1, target, coins, dp);
 
         // Option 2: current coin ko TAKE karo
-        // (same coin ko multiple times le sakte hain)
+        // (same coin ko multiple times le sakte hain toh ind-1 mt kro)
         int take = INT_MAX;
         if (coins[ind] <= target) {
             take = 1 + f(ind, target - coins[ind], coins, dp);
