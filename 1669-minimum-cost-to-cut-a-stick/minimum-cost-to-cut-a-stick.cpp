@@ -1,9 +1,9 @@
 class Solution {
 private:
     // f(i, j) = minimum cost to cut the stick
-    // jab hume cuts[i] se cuts[j] tak ke cuts lagane hain
-    // aur current stick ki boundary cuts[i-1] se cuts[j+1] tak hai
-
+    // jab hume cuts[i] se cuts[j] tak ke cuts lgane hain
+    // aur current stick ki boundary cuts[i-1] se cuts[j+1] tk hai
+    
     int f(int i, int j, vector<int>& cuts, vector<vector<int>>& dp) {
 
         // Base case:
@@ -30,7 +30,7 @@ private:
                 (cuts[j + 1] - cuts[i - 1]) + // current stick ki poori length
                 f(i, ind - 1, cuts, dp) +     // left part ka minimum cost
                 f(ind + 1, j, cuts, dp);      // right part ka minimum cost
-                
+
             // Har possible cut ke cost me se minimum choose karo
             mini = min(mini, cost);
         }
@@ -45,12 +45,12 @@ public:
         // Stick ke dono ends add kar rahe hain:
         // 0 = start of stick
         // n = end of stick
-        // Taaki har cut ke liye stick ki boundaries clear ho
+        // Taaki har cut ke liye stick ki boundaries (length) clear ho
         cuts.push_back(n);
         cuts.insert(cuts.begin(), 0);
 
         // Cuts ko increasing order me sort karna zaroori hai
-        // taaki stick segments sahi bane
+        // so that stick segments sahi bane
         sort(cuts.begin(), cuts.end());
 
         int c = cuts.size(); // total cuts (including 0 and n)
