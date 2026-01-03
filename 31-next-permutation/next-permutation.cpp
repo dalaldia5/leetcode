@@ -1,5 +1,6 @@
 class Solution {
 public:
+// STL: next_permutation(nums.begin(), nums.end())
     void nextPermutation(vector<int>& nums) {
         int ind = -1;
         int n = nums.size();
