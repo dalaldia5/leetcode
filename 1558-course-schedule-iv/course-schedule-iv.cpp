@@ -1,33 +1,44 @@
 class Solution {
 public:
+    void dfs(int node, vector<int>& vis, stack<int>& st,
+             vector<vector<int>>& adj) {
+        vis[node] = 1;
+        for (auto it : adj[node]) {
+            if (!vis[it]) {
+                dfs(it, vis, st, adj);
+            }
+        }
+        st.push(node);
+    }
     vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites,
                                      vector<vector<int>>& queries) {
-
+        vector<bool> ans(queries.size(), false);
+        vector<int> topo;
         vector<vector<int>> adj(n);
         for (auto it : prerequisites) {
             adj[it[0]].push_back(it[1]);
         }
-        vector<bool> ans(queries.size(), false);
-        // bfs
+        stack<int> st;
+        vector<int> vis(n, 0);
         for (int i = 0; i < n; i++) {
-            queue<int> q;
-            q.push(i);
-            vector<int> vis(n, 0);
-            vis[i] = 1;
-            while (!q.empty()) {
-                int node = q.front();
-                q.pop();
-                for (auto it : adj[node]) {
-                    if (!vis[it]) {
-                        vis[it] = 1;
-                        q.push(it);
-                    }
-                }
+            if (!vis[i]) {
+                dfs(i, vis, st, adj);
             }
-            for (int j = 0; j < queries.size(); j++) {
-                if (queries[j][0] == i && vis[queries[j][1]]) {
-                    ans[j] = true;
-                }
+        }
+        while (!st.empty()) {
+            int node = st.top();
+            topo.push_back(node);
+            st.pop();
+        }
+        for (int i = 0; i < queries.size(); i++) {
+            for (int i = 0; i < n; i++) {
+                vis[i] = 0;
+            }
+            int u = queries[i][0];
+            int v = queries[i][1];
+            dfs(u, vis, st, adj);
+            if (vis[v]) {
+                ans[i] = true;
             }
         }
         return ans;
