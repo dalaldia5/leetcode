@@ -41,6 +41,9 @@ public:
                 ans[i] = true;
             }
         }
+        // for (int i=0; i<topo.size(); i++){
+        //     cout<<topo[i];
+        // }
         return ans;
     }
 };
