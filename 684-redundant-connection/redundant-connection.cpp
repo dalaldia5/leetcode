@@ -1,14 +1,21 @@
 class Solution {
 public:
-    bool dfs(int node, int parent, vector<vector<int>>& adj, vector<int>& vis) {
+// cycle detection using bfs
+    bool detectCycle(int node, vector<vector<int>>& adj, vector<int>& vis) {
+        queue<pair<int, int>> q;
+        q.push({node, -1});
         vis[node] = 1;
-        for (auto it : adj[node]) {
-            if (!vis[it]) {
-                if (dfs(it, node, adj, vis)) {
+        while (!q.empty()) {
+            int src = q.front().first;
+            int parent = q.front().second;
+            q.pop();
+            for (auto it : adj[src]) {
+                if (!vis[it]) {
+                    vis[it] = 1;
+                    q.push({it, src});
+                } else if (it != parent) {
                     return true;
                 }
-            } else if (it != parent) {
-                return true;
             }
         }
         return false;
@@ -16,13 +23,14 @@ public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         int n = edges.size();
         vector<vector<int>> adj(n + 1);
-        for (auto it : edges) {
-            adj[it[0]].push_back(it[1]);
-            adj[it[1]].push_back(it[0]);
+        for (auto& e : edges) {
+            int u = e[0];
+            int v = e[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
             vector<int> vis(n + 1, 0);
-            // jis bhi edge ko add krke cycke bnegi, usko return kr denge
-            if (dfs(it[0], -1, adj, vis)) {
-                return it;
+            if (detectCycle(u, adj, vis)) {
+                return e;
             }
         }
         return {};
