@@ -1,6 +1,8 @@
 class Solution {
 public:
-    int maxProduct(vector<int>& nums) {
+    // If number of negative elements is odd, maximum product subarray can be obtained only by excluding either the prefix till first negative or the suffix after last negative.Hence we check prefix and suffix products.
+// Odd number of negatives ko even banane ke liye ek negative remove karna zaroori hota hai. Contiguous subarray me ye negative sirf ya to leftmost ho sakta hai ya rightmost.Isliye hum prefix aur suffix products ka maximum lete hain.
+        int maxProduct(vector<int>& nums) {
         int ans = INT_MIN;
         int pref = 1;
         int suff = 1;
