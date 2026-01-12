@@ -13,6 +13,7 @@
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
+        // morris traversal
         vector<int> inorder;
         TreeNode* curr = root;
         while (curr != NULL) {
