@@ -9,12 +9,7 @@ public:
             set.insert(arr[r]);
             if (set.size() > 2) {
                 l++;
-                // just clearing the leftmost elements wont work since we can
-                // have that element more times between l and r so instead we
-                // clear the set
                 set.clear();
-                // now after shifting l one place aage, we insert all the
-                // elements between l and r in the set
                 for (int i = l; i <= r; i++) {
                     set.insert(arr[i]);
                 }
